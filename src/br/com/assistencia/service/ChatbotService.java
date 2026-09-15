@@ -17,54 +17,116 @@ public class ChatbotService {
     //cod inicial
     public void iniciar() {
 
-        boolean continuar = true;
+        System.out.println("Olá! Sou o assistente da AutoTech.");
+        System.out.println("Você já é um de nossos clientes ?");
+        System.out.println("1 - Sim");
+        System.out.println("2 - Não");
 
-        while (continuar) {
+        String resposta = scanner.nextLine();
 
-            System.out.println("Olá! Sou o assistente da AutoTech.");
-            System.out.println("Você já é nosso cliente?");
-            System.out.println("1 - Sim");
-            System.out.println("2 - Não");
+        Cliente clienteAtual = null;
 
-            String resposta = scanner.nextLine();
+        if (resposta.equals("1")) {
 
-            if (resposta.equals("1")) {
+            System.out.println("Digite seu CPF:");
+            String cpf = scanner.nextLine();
 
-                System.out.println("Digite seu CPF:");
-                String cpf = scanner.nextLine();
+            clienteAtual = repository.buscarPorCpf(cpf);
 
-                Cliente cliente = repository.buscarPorCpf(cpf);
+            if (clienteAtual != null) {
 
-                if (cliente != null) {
-                    System.out.println("Olá, " + cliente.getPrimeiroNome() + "!");
-                } else {
-                    System.out.println("CPF não encontrado no sistema.");
-                }
-
-            } else if (resposta.equals("2")) {
-
-                cadastrarCliente();
+                System.out.println("Olá, " + clienteAtual.getPrimeiroNome() + "!");
+                menuPrincipal(clienteAtual);
 
             } else {
 
-                System.out.println("Opção inválida.");
+                System.out.println("CPF não encontrado no sistema.");
             }
 
-            System.out.println();
-            System.out.println("Deseja continuar?");
+        } else if (resposta.equals("2")) {
+
+            System.out.println("Você gostaria de realizar seu cadastro?");
             System.out.println("1 - Sim");
             System.out.println("2 - Não");
 
-            String continuarResposta = scanner.nextLine();
+            String cadastrar = scanner.nextLine();
 
-            if (continuarResposta.equals("2")) {
-                continuar = false;
+            if (cadastrar.equals("1")) {
+
+                clienteAtual = cadastrarCliente();
+
+                System.out.println();
+                System.out.println("Deseja ir para o menu?");
+                System.out.println("1 - Sim");
+                System.out.println("2 - Não");
+
+                String irParaMenu = scanner.nextLine();
+
+                if (irParaMenu.equals("1")) {
+                    menuPrincipal(clienteAtual);
+                }
+
+            } else {
+
+                System.out.println("Tudo bem. Quando precisar, estaremos à disposição.");
             }
+
+        } else {
+
+            System.out.println("Opção inválida.");
         }
     }
 
-    //cadastro de cliente- as perguntas estao meio secas,preciso melhorar
-    private void cadastrarCliente() {
+//Menu principal
+
+    private void menuPrincipal(Cliente cliente) {
+        boolean continuarMenu = true;
+
+        while (continuarMenu) {
+            System.out.println();
+            System.out.println("Como posso ajudar, " + cliente.getPrimeiroNome() + "?");
+            System.out.println();
+            System.out.println("1- Solicitar assistência técnica");
+            System.out.println("2- Consultar ordem de serviço");
+            System.out.println("3- Consultar histórico");
+            System.out.println("4- Meus Dados");
+            System.out.println("5- Sair");
+
+            String opcao = scanner.nextLine();
+
+            switch (opcao) {
+                case "1":
+                    System.out.println("Solicitar assistência técnica.");
+                    break;
+
+                case "2":
+                    System.out.println("Consultar ordem de serviço.");
+                    break;
+
+                case "3":
+                    System.out.println("Consultar histórico.");
+                    break;
+
+                case "4":
+                    System.out.println("Meus Dados.");
+                    break;
+
+                case "5":
+                    System.out.println("Ok, lembre-se: se precisar de alguma ajuda é só me procurar! Thcau Tchau :)");
+                    System.out.println("Saindo...");
+                    continuarMenu = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
+            }
+
+        }
+    }
+
+    //cadastro de cliente
+    private Cliente cadastrarCliente() {
 
         System.out.println("Vamos fazer seu cadastro.");
 
@@ -95,5 +157,8 @@ public class ChatbotService {
 
         System.out.println("Cadastro realizado com sucesso!");
         System.out.println("Seu ID de cliente é: " + cliente.getId());
+
+        return cliente;
     }
 }
+
