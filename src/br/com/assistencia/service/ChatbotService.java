@@ -1,6 +1,7 @@
 package br.com.assistencia.service;
 
 import br.com.assistencia.model.Cliente;
+import br.com.assistencia.model.OrdemServico;
 import br.com.assistencia.repository.ClienteRepository;
 
 import java.util.Scanner;
@@ -77,16 +78,17 @@ public class ChatbotService {
         }
     }
 
-//Menu principal
+//Menu principa
 
     private void menuPrincipal(Cliente cliente) {
+        OrdemServico ordemServico = null;
         boolean continuarMenu = true;
 
         while (continuarMenu) {
             System.out.println();
             System.out.println("Como posso ajudar, " + cliente.getPrimeiroNome() + "?");
             System.out.println();
-            System.out.println("1- Solicitar assistência técnica");
+            System.out.println("1- Solicitar serviço");
             System.out.println("2- Consultar ordem de serviço");
             System.out.println("3- Consultar histórico");
             System.out.println("4- Meus Dados");
@@ -96,11 +98,84 @@ public class ChatbotService {
 
             switch (opcao) {
                 case "1":
-                    System.out.println("Solicitar assistência técnica.");
+                    String servico = "";
+                    boolean escolherServico = true;
+                    while (escolherServico) {
+
+                        System.out.println();
+                        System.out.println("Qual serviço você deseja solicitar?");
+                        System.out.println();
+                        System.out.println("1- Troca de óleo");
+                        System.out.println("2- Revisão");
+                        System.out.println("3- Troca de pneus");
+                        System.out.println("4- Problema no motor");
+                        System.out.println("5- Volar");
+
+                        String opcaoServico = scanner.nextLine();
+
+
+                        switch (opcaoServico) {
+                            case "1":
+                                servico = "Troca de óleo";
+                                break;
+                            case "2":
+                                servico = "Revisão";
+                                break;
+                            case "3":
+                                servico = "Troca de pneus";
+                                break;
+                            case "4":
+                                servico = "Problema no motor";
+                                break;
+                            case "5":
+                                System.out.println("Voltando ao menu principal...");
+                                menuPrincipal(cliente);
+                                break;
+                            default:
+                                System.out.println("Opão inválida!");
+                                break;
+                        }
+
+                        if (!servico.isEmpty()){
+
+                            ordemServico = new OrdemServico(
+                                    cliente,
+                                    servico,
+                                    "Aberta"
+
+                            );
+
+                            System.out.println();
+                            System.out.println("Serviço selecionado:" + servico);
+                            System.out.println("Sua solicitação foi registrada com sucesso!");
+
+                        }
+
+
+
+                    }
+
+
+
+
+
+
                     break;
 
                 case "2":
-                    System.out.println("Consultar ordem de serviço.");
+                    if (ordemServico != null) {
+
+                        System.out.println();
+                        System.out.println("Sua ordem de serviço:");
+                        System.out.println("Serviço: " + ordemServico.getProblema());
+                        System.out.println("Status: " + ordemServico.getStatus());
+
+                    } else {
+
+                        System.out.println();
+                        System.out.println("Você ainda não possui nenhuma ordem de serviço.");
+                    }
+
                     break;
 
                 case "3":
