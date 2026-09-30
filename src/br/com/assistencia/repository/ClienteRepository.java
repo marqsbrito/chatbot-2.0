@@ -7,7 +7,20 @@ import java.util.List;
 
 public class ClienteRepository {
 
+
     private final List<Cliente> clientes = new ArrayList<>();
+
+    public ClienteRepository() {
+        Cliente clienteTeste = new Cliente(
+                "William",
+                "Teste",
+                "11999999999",
+                "teste@teste.com",
+                "1234"
+
+        );
+        adicionar(clienteTeste);
+    }
 
     public void adicionar(Cliente cliente) {
         clientes.add(cliente);

@@ -3,7 +3,9 @@ package br.com.assistencia.service;
 import br.com.assistencia.model.Cliente;
 import br.com.assistencia.model.OrdemServico;
 import br.com.assistencia.repository.ClienteRepository;
-
+//bibliotecas
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ChatbotService {
@@ -78,11 +80,12 @@ public class ChatbotService {
         }
     }
 
-//Menu principa
+//Menu principal
 
     private void menuPrincipal(Cliente cliente) {
         OrdemServico ordemServico = null;
         boolean continuarMenu = true;
+        List<OrdemServico> historico = new ArrayList<>();
 
         while (continuarMenu) {
             System.out.println();
@@ -102,7 +105,9 @@ public class ChatbotService {
                     boolean escolherServico = true;
                     while (escolherServico) {
 
+
                         System.out.println();
+
                         System.out.println("Qual serviço você deseja solicitar?");
                         System.out.println();
                         System.out.println("1- Troca de óleo");
@@ -117,36 +122,54 @@ public class ChatbotService {
                         switch (opcaoServico) {
                             case "1":
                                 servico = "Troca de óleo";
+                                escolherServico = false;
                                 break;
                             case "2":
                                 servico = "Revisão";
+                                escolherServico = false;
                                 break;
                             case "3":
                                 servico = "Troca de pneus";
+                                escolherServico = false;
                                 break;
                             case "4":
                                 servico = "Problema no motor";
+                                escolherServico = false;
                                 break;
                             case "5":
                                 System.out.println("Voltando ao menu principal...");
-                                menuPrincipal(cliente);
+                                escolherServico = false;
                                 break;
                             default:
                                 System.out.println("Opão inválida!");
                                 break;
                         }
 
+
+
                         if (!servico.isEmpty()){
+
+                            System.out.println();
+                            System.out.println("Para qual veículo será o(s) serviço(s) respectivamente?");
+                            System.out.println("Digite o modelo do veículo:");
+                            String modelo = scanner.nextLine();
+
+                            System.out.println("Digete a placa do veículo:");
+                            String placa = scanner.nextLine();
+
+                            String veiculo = modelo + "-" + placa;
 
                             ordemServico = new OrdemServico(
                                     cliente,
                                     servico,
-                                    "Aberta"
+                                    "Aberta",
+                                    veiculo
 
                             );
-
+                            historico.add(ordemServico);
                             System.out.println();
                             System.out.println("Serviço selecionado:" + servico);
+                            System.out.println("Véculo: " + veiculo);
                             System.out.println("Sua solicitação foi registrada com sucesso!");
 
                         }
@@ -168,6 +191,7 @@ public class ChatbotService {
                         System.out.println();
                         System.out.println("Sua ordem de serviço:");
                         System.out.println("Serviço: " + ordemServico.getProblema());
+                        System.out.println("Veículo: " + ordemServico.getVeiculo());
                         System.out.println("Status: " + ordemServico.getStatus());
 
                     } else {
@@ -179,7 +203,20 @@ public class ChatbotService {
                     break;
 
                 case "3":
-                    System.out.println("Consultar histórico.");
+                    if (historico.isEmpty()) {
+                        System.out.println();
+                        System.out.println("Você ainda não possui um histórico de serviços disponível.");
+
+                    } else {
+                        System.out.println();
+                        System.out.println("Aqui está o histórico de serviços: ");
+                        for (OrdemServico ordem : historico) {
+                            System.out.println();
+                            System.out.println("Veículo: " + ordem.getVeiculo());
+                            System.out.println("Serviço: " + ordem.getProblema());
+                            System.out.println("Status: " + ordem.getStatus());
+                        }
+                    }
                     break;
 
                 case "4":
