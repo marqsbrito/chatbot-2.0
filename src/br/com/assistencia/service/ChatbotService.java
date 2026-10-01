@@ -3,6 +3,7 @@ package br.com.assistencia.service;
 import br.com.assistencia.model.Cliente;
 import br.com.assistencia.model.OrdemServico;
 import br.com.assistencia.repository.ClienteRepository;
+
 //bibliotecas
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ChatbotService {
 
         String resposta = scanner.nextLine();
 
-        Cliente clienteAtual = null;
+        Cliente clienteAtual;
 
         if (resposta.equals("1")) {
 
@@ -105,9 +106,7 @@ public class ChatbotService {
                     boolean escolherServico = true;
                     while (escolherServico) {
 
-
                         System.out.println();
-
                         System.out.println("Qual serviço você deseja solicitar?");
                         System.out.println();
                         System.out.println("1- Troca de óleo");
@@ -117,7 +116,6 @@ public class ChatbotService {
                         System.out.println("5- Volar");
 
                         String opcaoServico = scanner.nextLine();
-
 
                         switch (opcaoServico) {
                             case "1":
@@ -145,8 +143,6 @@ public class ChatbotService {
                                 break;
                         }
 
-
-
                         if (!servico.isEmpty()){
 
                             System.out.println();
@@ -164,25 +160,15 @@ public class ChatbotService {
                                     servico,
                                     "Aberta",
                                     veiculo
-
                             );
                             historico.add(ordemServico);
                             System.out.println();
                             System.out.println("Serviço selecionado:" + servico);
-                            System.out.println("Véculo: " + veiculo);
+                            System.out.println("Veículo: " + veiculo);
                             System.out.println("Sua solicitação foi registrada com sucesso!");
 
                         }
-
-
-
                     }
-
-
-
-
-
-
                     break;
 
                 case "2":
@@ -203,24 +189,17 @@ public class ChatbotService {
                     break;
 
                 case "3":
-                    if (historico.isEmpty()) {
-                        System.out.println();
-                        System.out.println("Você ainda não possui um histórico de serviços disponível.");
-
-                    } else {
-                        System.out.println();
-                        System.out.println("Aqui está o histórico de serviços: ");
-                        for (OrdemServico ordem : historico) {
-                            System.out.println();
-                            System.out.println("Veículo: " + ordem.getVeiculo());
-                            System.out.println("Serviço: " + ordem.getProblema());
-                            System.out.println("Status: " + ordem.getStatus());
-                        }
-                    }
+                    consultarHistorico(historico);
                     break;
 
                 case "4":
-                    System.out.println("Meus Dados.");
+                    System.out.println("Meus Dados:");
+                    System.out.println();
+                    System.out.println("Nome: " + cliente.getPrimeiroNome() + " " + cliente.getSobrenome());
+                    System.out.println("CPF: " + cliente.getCpf());
+                    System.out.println("Telefone: " + cliente.getTelefone());
+                    System.out.println("Email: " + cliente.getEmail());
+
                     break;
 
                 case "5":
@@ -272,5 +251,29 @@ public class ChatbotService {
 
         return cliente;
     }
+
+    //Histórico do cliente
+    private void consultarHistorico(List<OrdemServico> historico) {
+
+        if (historico.isEmpty()) {
+
+            System.out.println();
+            System.out.println("Você ainda não possui um histórico de serviços disponível.");
+
+        } else {
+
+            System.out.println();
+            System.out.println("Aqui está o histórico de serviços:");
+
+            for (OrdemServico ordem : historico) {
+
+                System.out.println();
+                System.out.println("Veículo: " + ordem.getVeiculo());
+                System.out.println("Serviço: " + ordem.getProblema());
+                System.out.println("Status: " + ordem.getStatus());
+            }
+        }
+    }
 }
+
 

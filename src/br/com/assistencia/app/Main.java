@@ -11,3 +11,6 @@ public class Main {
         chatbot.iniciar();
     }
 }
+
+//Aluno: William Júnio Marques Brito
+//Curso: Análise e Desenvolvimento de sistemas
